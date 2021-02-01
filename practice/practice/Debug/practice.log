@@ -1,2 +1,11 @@
 ﻿  Source.cpp
+c:\users\wewew\documents\github\datastructure\practice\practice\source.cpp(28): warning C4477: 'scanf_s' : 格式字串 '%s' 需要 'int' 類型的引數，但 variadic 引數 2 的類型為 'char *'
+  c:\users\wewew\documents\github\datastructure\practice\practice\source.cpp(28): note: 此引數可用為緩衝區大小
+c:\users\wewew\documents\github\datastructure\practice\practice\source.cpp(28): warning C4477: 'scanf_s' : 格式字串 '%s' 需要 'char *' 類型的引數，但 variadic 引數 3 的類型為 'int *'
+  c:\users\wewew\documents\github\datastructure\practice\practice\source.cpp(28): note: 此引數可用為轉換規範
+c:\users\wewew\documents\github\datastructure\practice\practice\source.cpp(28): warning C4477: 'scanf_s' : 格式字串 '%s' 需要 'int' 類型的引數，但 variadic 引數 4 的類型為 'int *'
+  c:\users\wewew\documents\github\datastructure\practice\practice\source.cpp(28): note: 此引數可用為緩衝區大小
+c:\users\wewew\documents\github\datastructure\practice\practice\source.cpp(28): warning C4473: 'scanf_s' : 傳遞給格式字串的引數不足
+  c:\users\wewew\documents\github\datastructure\practice\practice\source.cpp(28): note: 預留位置及其參數需要 6 個 variadic 引數，但卻提供了 4 個
+  c:\users\wewew\documents\github\datastructure\practice\practice\source.cpp(28): note: 缺少 variadic 引數 5 (其為格式字串 '%d' 所需)
   practice.vcxproj -> C:\Users\wewew\Documents\GitHub\DataStructure\practice\Debug\practice.exe
