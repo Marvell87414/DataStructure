@@ -2,27 +2,38 @@
 #include<stdlib.h>
 #include<conio.h>
 int main() {
-	int arrB[4][4], i, j;
-	int arrA[4][4] = { { 1,2,3,4 },{ 5,6,7,8 },{ 9,10,11,12 },{ 13,14,15,16 } };
-	printf("[請輸入矩陣內容]\n");
-	for (i = 0; i < 4; i++)
+	int i, j, NONZERO = 0;
+	int temp = 1;
+	int Sparse[6][6] = { 15,0,0,22,0,-15,0,11,3,0,0,0,0,0,0,-6,0,0,0,0,0,0,0,0,91,0,0,0,0,0,0,0,28,0,0,0 };
+	int Compress[9][3];
+	printf("[稀疏矩陣的各個元素\n]");
+	for ( i = 0; i < 6; i++)
 	{
-		for (j = 0;j < 4;j++) {
-			printf("%d\t", arrA[i][j]);
+		for (j = 0;j < 6;j++) {
+			printf("[%d]\t ", Sparse[i][j]);
+			if (Sparse[i][j] != 0) NONZERO++;
 		}
 		printf("\n");
 	}
-	for (i = 0; i < 4; i++)
+	Compress[0][0] = 6;
+	Compress[0][1] = 6;
+	Compress[0][2] = NONZERO;
+	for (i = 0; i < 6; i++)
 	{
-		for (j = 0;j < 4;j++) {
-			arrB[i][j] = arrA[j][i];
+		for (j = 0;j < 6;j++) {
+			if (Sparse[i][j] != 0) {
+				Compress[temp][0] = i;
+				Compress[temp][1] = j;
+				Compress[temp][2] = Sparse[i][j];
+				temp++;
+			}
 		}
 	}
-	printf("[轉置矩陣內容為]\n");
-	for (i = 0; i < 4; i++)
-	{
-		for (j = 0;j < 4;j++) {
-			printf("%d\t", arrB[i][j]);
+	printf("[稀疏矩陣壓縮後的內容]\n");
+	for (i = 0;i < NONZERO;i++) {
+		for (j = 0; j < 3; j++)
+		{
+			printf("[%d] ", Compress[i][j]);
 		}
 		printf("\n");
 	}
