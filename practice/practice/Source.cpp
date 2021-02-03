@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+
 int main() {
 	int select, student_no = 0, num = 0;
 	float Msum = 0,Esum = 0;
@@ -25,7 +27,9 @@ int main() {
 		if (select != 2) {
 			printf("姓名 學號 數學成績 英文成績: ");
 			new_data = (s_data*)malloc(sizeof(s_data));
-			scanf_s("%s %s %d %d", new_data->name, new_data->no, &new_data->Math, &new_data->Eng);
+			scanf_s("%s", new_data->name, sizeof(new_data->name));
+			scanf_s("%s", new_data->no, sizeof(new_data->no));
+			scanf_s("%d%d", &new_data->Math, &new_data->Eng);
 			ptr->next = new_data;
 			new_data->next = NULL;
 			ptr = ptr->next;
