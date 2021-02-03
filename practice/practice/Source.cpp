@@ -2,53 +2,120 @@
 #include<stdlib.h>
 #include<string.h>
 
-int main() {
-	int select, student_no = 0, num = 0;
-	float Msum = 0,Esum = 0;
-	struct student
-	{
-		char name[20];
-		int Math;
-		int Eng;
-		char no[10];
-		struct student *next;
-	};
-	typedef struct student s_data;
-	s_data *ptr;
-	s_data *head;
-	s_data *new_data;
+struct employee
+{
+	int num, score;
+	char name[10];
+	struct employee *next;
+};
+typedef struct employee node;
+typedef node *link;
 
-	head = (s_data*)malloc(sizeof(s_data));
-	head->next = NULL;
+link findnode(link head, int num) {
+	link ptr;
 	ptr = head;
-	do {
-		printf("(1)新增 (2)離開 =>");
-		scanf_s("%d", &select);
-		if (select != 2) {
-			printf("姓名 學號 數學成績 英文成績: ");
-			new_data = (s_data*)malloc(sizeof(s_data));
-			scanf_s("%s", new_data->name, sizeof(new_data->name));
-			scanf_s("%s", new_data->no, sizeof(new_data->no));
-			scanf_s("%d%d", &new_data->Math, &new_data->Eng);
-			ptr->next = new_data;
-			new_data->next = NULL;
-			ptr = ptr->next;
-			num++;
-		}
-	} while (select != 2);
-	ptr = head->next;
-	putchar('\n');
 	while (ptr!=NULL)
 	{
-		printf("姓名:%s\t 學號:%s\t 數學成績:%d\t 英文成績:%d\t\n", ptr->name, ptr->no, ptr->Math, ptr->Eng);
-		Msum += ptr->Math;
-		Esum += ptr->Eng;
-		student_no++;
+		if (ptr->num == num)
+			return ptr;
 		ptr = ptr->next;
 	}
-	printf("--------------------------------------------------\n");
-	printf("本串列學生數學平均成績:%.2f 英文平均成績%.2f\n",Msum/student_no,Esum/student_no);
+	return ptr;
+}
+link Insertnode(link head, link ptr, int num, int score, char name[10]) {
+	link insertnode;
+	insertnode = (link)malloc(sizeof(node));
+	if (!insertnode)
+		return NULL;
+	insertnode->num = num;
+	insertnode->score = score;
+	strcpy_s(insertnode->name, name);
+	insertnode->next = NULL;
+	if (ptr == NULL) {
+		insertnode->next = head;
+		return insertnode;
+	}
+	else{
+		if (ptr->next == NULL) {
+			ptr->next = insertnode;
+		}
+		else {
+			insertnode->next = ptr->next;
+			ptr->next = insertnode;
+		}
+	}
+	return head;
+}
 
+int main() {
+	link head, ptr, newnode;
+	int new_num, new_score;
+	char new_name[10];
+	int i, j, position = 0, find;
+	int data[12][2] = { 1001,32367,1002,24338,1003,27556,1007,31299,
+		1012,42660,1014,25676,1018,44145,1043,52182,1031,32769,
+		1037,21100,1041,32196,1046,25776 };
+	char namedata[12][10] = { {"Allen"},{ "Scott" },{ "Marry" },{ "John" },
+	{ "Mark" },{ "Ricky" },{ "Lisa" },{ "Jasica" },{ "Hanson" },{ "Amy" },{ "Bob" },
+	{ "Jack" } };
+	printf("員工編號 薪水 員工編號 薪水 員工編號 薪水 員工編號 薪水\n");
+	printf("-------------------------------------------------------\n");
+	for (i = 0;i < 3;i++) {
+		for (j = 0;j < 4;j++) {
+			printf("[%4d] $%5d ",data[j*3+i][0],data[j*3+i][1]);
+		}
+		printf("\n");
+	}
+	printf("-------------------------------------------------------\n");
+	head = (link)malloc(sizeof(node));
+	if (!head) {
+		printf("Error!!記憶體配置失敗!!\n");
+		exit(1);
+	}
+	head->num = data[0][0];
+	for (j = 0;j < 10;j++) {
+		head->name[j] = namedata[0][j];
+	}
+	head->score = data[0][1];
+	head->next = NULL;
+	ptr = head;
+	for (i = 1;i < 12;i++) {
+		newnode = (link)malloc(sizeof(node));
+		newnode->num = data[i][0];
+		for (j = 0;j < 10;j++) {
+			newnode->name[j] = namedata[i][j];
+		}
+		newnode->score = data[i][1];
+		newnode->next = NULL;
+		ptr->next = newnode;
+		ptr = ptr->next;
+	}
+	while (1)
+	{
+		printf("\n");
+		printf("請輸入要插入其後的員工編號,如輸入的編號不再此串列中,\n");
+		printf("新輸入的員工節點將視為此串列的串列首,要結束插入過程,請輸入-1:");
+		scanf_s("%d", &position);
+		if (position == -1)
+			break;
+		else {
+			ptr = findnode(head, position);
+			printf("請輸入新插入的員工編號:");
+			scanf_s("%d", &new_num);
+			printf("請輸入新插入的員工薪水:");
+			scanf_s("%d", &new_score);
+			printf("請輸入新插入的員工姓名:");
+			scanf_s("%s", new_name,sizeof(new_name));
+			head = Insertnode(head, ptr, new_num, new_score, new_name);
+		}
+		ptr = head;
+		printf("\n\t員工編號	姓名\t薪水\n");
+		printf("\t================================\n");
+		while (ptr != NULL) {
+			printf("\t[%2d]\t[  %-7s]\t[%3d]\n", ptr->num, ptr->name, ptr->score);
+			ptr = ptr->next;
+		}
+	}
 	system("pause");
 	return 0;
 }
