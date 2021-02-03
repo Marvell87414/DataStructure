@@ -10,7 +10,7 @@ struct employee
 };
 typedef struct employee node;
 typedef node *link;
-
+link del_ptr(link head, link ptr);
 link findnode(link head, int num) {
 	link ptr;
 	ptr = head;
@@ -49,9 +49,8 @@ link Insertnode(link head, link ptr, int num, int score, char name[10]) {
 
 int main() {
 	link head, ptr, newnode;
-	int new_num, new_score;
-	char new_name[10];
-	int i, j, position = 0, find;
+	int i, j,find;
+	int findword=0;
 	int data[12][2] = { 1001,32367,1002,24338,1003,27556,1007,31299,
 		1012,42660,1014,25676,1018,44145,1043,52182,1031,32769,
 		1037,21100,1041,32196,1046,25776 };
@@ -60,6 +59,7 @@ int main() {
 	{ "Jack" } };
 	printf("員工編號 薪水 員工編號 薪水 員工編號 薪水 員工編號 薪水\n");
 	printf("-------------------------------------------------------\n");
+
 	for (i = 0;i < 3;i++) {
 		for (j = 0;j < 4;j++) {
 			printf("[%4d] $%5d ",data[j*3+i][0],data[j*3+i][1]);
@@ -90,32 +90,62 @@ int main() {
 		ptr->next = newnode;
 		ptr = ptr->next;
 	}
+
 	while (1)
 	{
 		printf("\n");
-		printf("請輸入要插入其後的員工編號,如輸入的編號不再此串列中,\n");
-		printf("新輸入的員工節點將視為此串列的串列首,要結束插入過程,請輸入-1:");
-		scanf_s("%d", &position);
-		if (position == -1)
+		printf("請輸入要刪除的員工編號,要結束插入過程,請輸入-1: ");
+		scanf_s("%d", &findword);
+		if (findword == -1)
 			break;
 		else {
-			ptr = findnode(head, position);
-			printf("請輸入新插入的員工編號:");
-			scanf_s("%d", &new_num);
-			printf("請輸入新插入的員工薪水:");
-			scanf_s("%d", &new_score);
-			printf("請輸入新插入的員工姓名:");
-			scanf_s("%s", new_name,sizeof(new_name));
-			head = Insertnode(head, ptr, new_num, new_score, new_name);
+			ptr = head;
+			find = 0;
+			while (ptr != NULL) {
+				if (ptr->num == findword) {
+					ptr = del_ptr(head, ptr);
+					find++;
+					head = ptr;
+					break;
+				}
+				ptr = ptr->next;
+			}
+			if (find == 0)
+				printf("######沒有找到######");
 		}
-		ptr = head;
-		printf("\n\t員工編號	姓名\t薪水\n");
-		printf("\t================================\n");
-		while (ptr != NULL) {
-			printf("\t[%2d]\t[  %-7s]\t[%3d]\n", ptr->num, ptr->name, ptr->score);
-			ptr = ptr->next;
-		}
+	}
+	ptr = head;
+	printf("\n\t員工編號	姓名\t薪水\n");
+	printf("\t================================\n");
+	while (ptr != NULL) {
+		printf("\t[%2d]\t[  %-7s]\t[%3d]\n", ptr->num, ptr->name, ptr->score);
+		ptr = ptr->next;
 	}
 	system("pause");
 	return 0;
+}
+
+link del_ptr(link head, link ptr) {
+	link top;
+	top = (link)malloc(sizeof(node));
+	top = head;
+	if (ptr->num == head->num) {
+		head = head->next;
+		printf("已刪除第 %d 號員工 姓名: %s 薪資:%d\n", ptr->num, ptr->name, ptr->score);
+	}
+	else {
+		while (top->next!=ptr) {
+			top = top->next;
+		}
+		if (ptr->next == NULL) {
+			top->next = NULL;
+			printf("已刪除第 %d 號員工 姓名: %s 薪資:%d\n", ptr->num, ptr->name, ptr->score);
+		}
+		else {
+			top->next = ptr->next;
+			printf("已刪除第 %d 號員工 姓名: %s 薪資:%d\n", ptr->num, ptr->name, ptr->score);
+		}
+	}
+	free(ptr);
+	return head;
 }
