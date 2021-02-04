@@ -11,46 +11,10 @@ struct employee
 typedef struct employee node;
 typedef node *link;
 link del_ptr(link head, link ptr);
-link findnode(link head, int num) {
-	link ptr;
-	ptr = head;
-	while (ptr!=NULL)
-	{
-		if (ptr->num == num)
-			return ptr;
-		ptr = ptr->next;
-	}
-	return ptr;
-}
-link Insertnode(link head, link ptr, int num, int score, char name[10]) {
-	link insertnode;
-	insertnode = (link)malloc(sizeof(node));
-	if (!insertnode)
-		return NULL;
-	insertnode->num = num;
-	insertnode->score = score;
-	strcpy_s(insertnode->name, name);
-	insertnode->next = NULL;
-	if (ptr == NULL) {
-		insertnode->next = head;
-		return insertnode;
-	}
-	else{
-		if (ptr->next == NULL) {
-			ptr->next = insertnode;
-		}
-		else {
-			insertnode->next = ptr->next;
-			ptr->next = insertnode;
-		}
-	}
-	return head;
-}
 
 int main() {
-	link head, ptr, newnode;
-	int i, j,find;
-	int findword=0;
+	link head, ptr, newnode,last,before;
+	int i, j, findword = 0;
 	int data[12][2] = { 1001,32367,1002,24338,1003,27556,1007,31299,
 		1012,42660,1014,25676,1018,44145,1043,52182,1031,32769,
 		1037,21100,1041,32196,1046,25776 };
@@ -90,35 +54,36 @@ int main() {
 		ptr->next = newnode;
 		ptr = ptr->next;
 	}
-
-	while (1)
+	ptr = head;
+	i = 0;
+	printf("原始員工串列節點資料:\n");
+	while (ptr!=NULL)
 	{
-		printf("\n");
-		printf("請輸入要刪除的員工編號,要結束插入過程,請輸入-1: ");
-		scanf_s("%d", &findword);
-		if (findword == -1)
-			break;
-		else {
-			ptr = head;
-			find = 0;
-			while (ptr != NULL) {
-				if (ptr->num == findword) {
-					ptr = del_ptr(head, ptr);
-					find++;
-					head = ptr;
-					break;
-				}
-				ptr = ptr->next;
-			}
-			if (find == 0)
-				printf("######沒有找到######");
+		printf("[%2d %6s %3d] -> ", ptr->num, ptr->name, ptr->score);
+		i++;
+		if(i >= 3) {
+			printf("\n");
+			i = 0;
 		}
+		ptr = ptr->next;
 	}
 	ptr = head;
-	printf("\n\t員工編號	姓名\t薪水\n");
-	printf("\t================================\n");
+	before = NULL;
+	printf("\n反轉後串列節點資料:\n");
 	while (ptr != NULL) {
-		printf("\t[%2d]\t[  %-7s]\t[%3d]\n", ptr->num, ptr->name, ptr->score);
+		last = before;
+		before = ptr;
+		ptr = ptr->next;
+		before->next = last;
+	}
+	ptr = before;
+	while (ptr != NULL) {
+		printf("[%2d %6s %3d] -> ", ptr->num, ptr->name, ptr->score);
+		i++;
+		if (i >= 3) {
+			printf("\n");
+			i = 0;
+		}
 		ptr = ptr->next;
 	}
 	system("pause");
